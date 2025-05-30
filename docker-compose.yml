@@ -1,0 +1,56 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=soulscribe
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=SoulScribe
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - soulscribe-network
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U soulscribe"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - VITE_DATABASE_URL=postgresql://soulscribe:password@postgres:5432/SoulScribe
+      - PGUSER=soulscribe
+      - PGPASSWORD=password
+      - PGDATABASE=SoulScribe
+      - PGHOST=postgres
+      - PGPORT=5432
+    restart: unless-stopped
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - soulscribe-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/api/auth/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+
+
+networks:
+  soulscribe-network:
+    driver: bridge
+
+# Uncomment if using a database
+volumes:
+  postgres-data:
