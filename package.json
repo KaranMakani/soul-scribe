@@ -1,0 +1,45 @@
+{
+  "name": "rest-express",
+  "version": "1.0.0",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "NODE_ENV=development tsx server/index.ts",
+    "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
+    "start": "NODE_ENV=production node dist/index.js",
+    "check": "tsc",
+    "db:push": "drizzle-kit push"
+  },
+  "dependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
+    "react": "^18.3.1",
+    "react-day-picker": "^8.10.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.55.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.15",
+    "@types/connect-pg-simple": "^7.0.3",
+    "@types/express": "4.17.21",
+    "@types/express-session": "^1.18.0",
+    "@types/node": "20.16.11",
+    "@types/passport": "^1.0.16",
+    "@types/passport-local": "^1.0.38",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "@types/ws": "^8.5.13",
+    "@vitejs/plugin-react": "^4.3.2",
+    "autoprefixer": "^10.4.20",
+    "drizzle-kit": "^0.30.4",
+    "esbuild": "^0.25.0",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.1",
+    "typescript": "5.6.3",
+    "vite": "^5.4.14"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.8"
+  }
+}
